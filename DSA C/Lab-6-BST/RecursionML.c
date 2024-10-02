@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
+
+struct Node *insert(struct Node *root, int data) {
+    if (root == NULL) {
+        struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+        newNode->data = data;
+        newNode->left = newNode->right = NULL;
+        return newNode;
+    }
+
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+
+    return root;
+}
+
+struct Node *findMinRecursive(struct Node *root) {
+    if (root == NULL) {
+        return NULL;
+    } else if (root->left == NULL) {
+        return root;
+    } else {
+        return findMinRecursive(root->left);
+    }
+}
+
+struct Node *findMaxRecursive(struct Node *root) {
+    if (root == NULL) {
+        return NULL;
+    } else if (root->right == NULL) {
+        return root;
+    } else {
+        return findMaxRecursive(root->right);
+    }
+}
+
+int main() {
+    struct Node *root = NULL;
+
+    // Insert elements into the binary search tree
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+
+    // Find minimum and maximum elements using recursion
+    struct Node *minNode = findMinRecursive(root);
+    struct Node *maxNode = findMaxRecursive(root);
+
+    if (minNode != NULL) {
+        printf("Smallest element: %d\n", minNode->data);
+    } else {
+        printf("Tree is empty\n");
+    }
+
+    if (maxNode != NULL) {
+        printf("Largest element: %d\n", maxNode->data);
+    } else {
+        printf("Tree is empty\n");
+    }
+
+    return 0;
+}
